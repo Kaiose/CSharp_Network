@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kaios\\source\\repos\\CSharp Server\\CSharp Server\\CSharp Server.csproj",
+      "projectUniqueName": "C:\\Users\\kaios\\Desktop\\CSharp_Network\\CSharp Server\\CSharp Server\\CSharp Server.csproj",
       "projectName": "CSharp Server",
-      "projectPath": "C:\\Users\\kaios\\source\\repos\\CSharp Server\\CSharp Server\\CSharp Server.csproj",
+      "projectPath": "C:\\Users\\kaios\\Desktop\\CSharp_Network\\CSharp Server\\CSharp Server\\CSharp Server.csproj",
       "packagesPath": "C:\\Users\\kaios\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kaios\\source\\repos\\CSharp Server\\CSharp Server\\obj\\",
+      "outputPath": "C:\\Users\\kaios\\Desktop\\CSharp_Network\\CSharp Server\\CSharp Server\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"

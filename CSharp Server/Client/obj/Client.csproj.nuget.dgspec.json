@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kaios\\source\\repos\\CSharp Server\\Client\\Client.csproj": {}
+    "C:\\Users\\kaios\\Desktop\\CSharp_Network\\CSharp Server\\Client\\Client.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kaios\\source\\repos\\CSharp Server\\Client\\Client.csproj": {
+    "C:\\Users\\kaios\\Desktop\\CSharp_Network\\CSharp Server\\Client\\Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kaios\\source\\repos\\CSharp Server\\Client\\Client.csproj",
+        "projectUniqueName": "C:\\Users\\kaios\\Desktop\\CSharp_Network\\CSharp Server\\Client\\Client.csproj",
         "projectName": "Client",
-        "projectPath": "C:\\Users\\kaios\\source\\repos\\CSharp Server\\Client\\Client.csproj",
+        "projectPath": "C:\\Users\\kaios\\Desktop\\CSharp_Network\\CSharp Server\\Client\\Client.csproj",
         "packagesPath": "C:\\Users\\kaios\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kaios\\source\\repos\\CSharp Server\\Client\\obj\\",
+        "outputPath": "C:\\Users\\kaios\\Desktop\\CSharp_Network\\CSharp Server\\Client\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"

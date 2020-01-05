@@ -9,3 +9,14 @@ C:\Users\kaios\source\repos\CSharp Server\CSharp Server\obj\Debug\netcoreapp3.1\
 C:\Users\kaios\source\repos\CSharp Server\CSharp Server\obj\Debug\netcoreapp3.1\CSharp Server.AssemblyInfo.cs
 C:\Users\kaios\source\repos\CSharp Server\CSharp Server\obj\Debug\netcoreapp3.1\CSharp Server.dll
 C:\Users\kaios\source\repos\CSharp Server\CSharp Server\obj\Debug\netcoreapp3.1\CSharp Server.pdb
+C:\Users\kaios\Desktop\CSharp_Network\CSharp Server\CSharp Server\bin\Debug\netcoreapp3.1\CSharp Server.exe
+C:\Users\kaios\Desktop\CSharp_Network\CSharp Server\CSharp Server\bin\Debug\netcoreapp3.1\CSharp Server.deps.json
+C:\Users\kaios\Desktop\CSharp_Network\CSharp Server\CSharp Server\bin\Debug\netcoreapp3.1\CSharp Server.runtimeconfig.json
+C:\Users\kaios\Desktop\CSharp_Network\CSharp Server\CSharp Server\bin\Debug\netcoreapp3.1\CSharp Server.runtimeconfig.dev.json
+C:\Users\kaios\Desktop\CSharp_Network\CSharp Server\CSharp Server\bin\Debug\netcoreapp3.1\CSharp Server.dll
+C:\Users\kaios\Desktop\CSharp_Network\CSharp Server\CSharp Server\bin\Debug\netcoreapp3.1\CSharp Server.pdb
+C:\Users\kaios\Desktop\CSharp_Network\CSharp Server\CSharp Server\obj\Debug\netcoreapp3.1\CSharp Server.csprojAssemblyReference.cache
+C:\Users\kaios\Desktop\CSharp_Network\CSharp Server\CSharp Server\obj\Debug\netcoreapp3.1\CSharp Server.AssemblyInfoInputs.cache
+C:\Users\kaios\Desktop\CSharp_Network\CSharp Server\CSharp Server\obj\Debug\netcoreapp3.1\CSharp Server.AssemblyInfo.cs
+C:\Users\kaios\Desktop\CSharp_Network\CSharp Server\CSharp Server\obj\Debug\netcoreapp3.1\CSharp Server.dll
+C:\Users\kaios\Desktop\CSharp_Network\CSharp Server\CSharp Server\obj\Debug\netcoreapp3.1\CSharp Server.pdb

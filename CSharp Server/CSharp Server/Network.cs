@@ -15,7 +15,10 @@ namespace CSharp_Server
         public byte[] buffer = new byte[BufferSize];
         public static readonly int ConnectionSize = 100;
 
+        
         public NetworkResource(Socket socket) { this.socket = socket; }
+
+
     }
 
     public class Listener
@@ -58,7 +61,7 @@ namespace CSharp_Server
 
             Socket listenSocket = socketObject.AsyncState as Socket;
             Socket socket = listenSocket.EndAccept(socketObject);
-
+            
             NetworkResource nr = new NetworkResource(socket);
             socket.BeginReceive(nr.buffer, 0, NetworkResource.BufferSize, 0, new AsyncCallback(ReadCallback), nr);
         }
@@ -77,7 +80,13 @@ namespace CSharp_Server
 
                 string content = Encoding.ASCII.GetString(buffer,0,recvBytes);
 
-                Console.WriteLine(content);
+                int size = BitConverter.ToInt32(buffer, 0);
+                PacketType packetType = (PacketType)BitConverter.ToInt32(buffer, sizeof(int));
+                // getPacket
+
+                PK_C_REQ_MESSAGE temp = new PK_C_REQ_MESSAGE();
+                temp.Decode(buffer, size);
+                Console.WriteLine($"Packet Size : {size} , Packet Type : { packetType} ");
 
             }
 
