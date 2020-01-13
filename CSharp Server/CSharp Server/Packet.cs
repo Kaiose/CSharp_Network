@@ -17,57 +17,73 @@ namespace CSharp_Server
 
     
 
-    abstract public class Packet     {
-        PacketType packetType;
-        public int offset;
-        protected MemoryStream memoryStream;
+    public class Packet {
+
+        protected PacketType packetType;
+        protected byte[] buffer = new byte[1024];
+        protected int offset = sizeof(int) + sizeof(PacketType);
+
+
         public Packet()
         {
-            memoryStream = new MemoryStream(1024);
-            packetType = PacketType.NONE;
             
         }
 
-        public abstract void Encode();
-
-        public abstract void Decode(byte[] recvBytes, int len);
-
-        public void setPacketType(PacketType packetType)
+        protected virtual void Serialize() { }
+        protected virtual void Deserialize(byte[] recvBytes) { }
+        public void Encode() // totalLen + typeHeader + data
         {
-            this.packetType = packetType;
+            offset = sizeof(int) + sizeof(PacketType);
+            Serialize();
+            Stream.finalSet(buffer, getPacketType(), offset);
+        }
+
+        public int Decode(byte[] recvBytes) { // only data
+            Deserialize(recvBytes);
+            return offset; 
+        }
+        //public abstract void Decode(byte[] recvBytes, int len);
+
+        
+        public static Packet getPacket(PacketType packetType)
+        {
+            Packet result = null;
+            switch (packetType)
+            {
+                case PacketType.E_C_REQ_MESSAGE:
+                    result = new PK_C_REQ_MESSAGE();
+                    break;
+                case PacketType.E_S_ANS_MESSAGE:
+                    break;
+            }
+            return result;
         }
 
         public PacketType getPacketType() { return packetType; }
-        public MemoryStream getMemoryStream() { return memoryStream; }
+
     }
     // [size:int][type:int][stream]
 
 
     public class PK_C_REQ_MESSAGE : Packet
     {
+        
         public string message;
+        
         public PK_C_REQ_MESSAGE() 
         {
-            setPacketType(PacketType.E_C_REQ_MESSAGE);
+            this.packetType = PacketType.E_C_REQ_MESSAGE;
         }
-        public override void Encode()
+        
+        protected override void Serialize()
         {
-            
-            byte[] buff = Encoding.Unicode.GetBytes(message);
-            int size = sizeof(int) + sizeof(PacketType) + buff.Length;
-            memoryStream.Write(BitConverter.GetBytes(size), 0, sizeof(int));
-            memoryStream.Write(BitConverter.GetBytes((int)getPacketType()), 0, sizeof(PacketType));
-            memoryStream.Write(buff, 0, buff.Length);
-            
-            
-
+            Stream.write(buffer,message,ref this.offset);
         }
 
-        public override void Decode(byte[] recvBytes,int len)
+
+        protected override void Deserialize(byte[] recvBytes)
         {
-            int offset = sizeof(int) + sizeof(PacketType);
-            message = Encoding.Unicode.GetString(recvBytes,offset,len - offset);
-            Console.WriteLine(message);
+            Stream.read(recvBytes, ref message, ref this.offset);
         }
 
     }

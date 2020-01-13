@@ -4,14 +4,22 @@ using System.Text;
 
 namespace CSharp_Server
 {
-    abstract class PacketInterface
+    interface PacketInterface
     {
 
-
-        public abstract void Encoding();
-
-        public abstract void Decoding();
+        public void Encode()
+        {
         
+        }
+
+
+        public void temp()
+        {
+
+        }
+        public void Decode(byte[] recvBytes, int len);
+        
+
 
     }
 }

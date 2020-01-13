@@ -72,21 +72,13 @@ namespace CSharp_Server
             Socket socket = nr.socket;
             int recvBytes = socket.EndReceive(networkObject);
 
-            if(recvBytes > 0)
-            {
-
-                byte[] buffer = new byte[1024];
-                nr.buffer.CopyTo(buffer, 0);
-
-                string content = Encoding.ASCII.GetString(buffer,0,recvBytes);
-
-                int size = BitConverter.ToInt32(buffer, 0);
-                PacketType packetType = (PacketType)BitConverter.ToInt32(buffer, sizeof(int));
+            int currentOffset = 0;
+            while(currentOffset < recvBytes) { 
+                PacketType packetType = (PacketType)BitConverter.ToInt32(nr.buffer, sizeof(int));
                 // getPacket
-
-                PK_C_REQ_MESSAGE temp = new PK_C_REQ_MESSAGE();
-                temp.Decode(buffer, size);
-                Console.WriteLine($"Packet Size : {size} , Packet Type : { packetType} ");
+                Packet packet = Packet.getPacket(packetType);
+                currentOffset = packet.Decode(nr.buffer);
+                //Console.WriteLine($"Packet Size : {size} , Packet Type : { packetType} ");
 
             }
 
