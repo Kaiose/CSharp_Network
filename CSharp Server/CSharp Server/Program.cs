@@ -12,9 +12,9 @@ namespace CSharp_Server
     {
         static void Main(string[] args)
         {
-            Network network = new Network();
-            network.Start();
+            Server server = new Server();
 
+            Console.Read();
 
         }
 

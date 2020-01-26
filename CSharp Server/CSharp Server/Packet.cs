@@ -21,7 +21,7 @@ namespace CSharp_Server
 
         protected PacketType packetType;
         protected byte[] buffer = new byte[1024];
-        protected int offset = sizeof(int) + sizeof(PacketType);
+        public int offset = sizeof(int) + sizeof(PacketType);
 
 
         public Packet()

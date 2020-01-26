@@ -65,6 +65,10 @@ namespace Client
                 memoryStream.Write(BitConverter.GetBytes((int)getPacketType()), 0, sizeof(PacketType));
                 memoryStream.Write(BitConverter.GetBytes(buff.Length), 0, sizeof(int));
                 memoryStream.Write(buff, 0, buff.Length);
+                memoryStream.Write(BitConverter.GetBytes(size), 0, sizeof(int));
+                memoryStream.Write(BitConverter.GetBytes((int)getPacketType()), 0, sizeof(PacketType));
+                memoryStream.Write(BitConverter.GetBytes(buff.Length), 0, sizeof(int));
+                memoryStream.Write(buff, 0, buff.Length);
 
             }
 

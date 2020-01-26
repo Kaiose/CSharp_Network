@@ -26,7 +26,7 @@ namespace CSharp_Server
             int length = 0;
             read(buffer, ref length, ref offset);
 
-            Encoding.Unicode.GetString(buffer, offset, length);
+            value = Encoding.Unicode.GetString(buffer, offset, length);
             offset += length;
         }
 

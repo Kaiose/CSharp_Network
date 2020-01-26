@@ -8,6 +8,8 @@ using System.Threading;
 
 namespace CSharp_Server
 {
+    /*
+
     public class NetworkResource
     {
         public Socket socket = null;
@@ -30,7 +32,6 @@ namespace CSharp_Server
 
             IPAddress ipAddress = IPAddress.Parse(IP);
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, port);
-
             Socket listenSocket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             try
@@ -44,7 +45,7 @@ namespace CSharp_Server
                     Console.WriteLine("Waitting for connections...");
 
                     listenSocket.BeginAccept(new AsyncCallback(AcceptCallback), listenSocket);
-
+                    
                     allDone.WaitOne();
                 }
 
@@ -61,7 +62,6 @@ namespace CSharp_Server
 
             Socket listenSocket = socketObject.AsyncState as Socket;
             Socket socket = listenSocket.EndAccept(socketObject);
-            
             NetworkResource nr = new NetworkResource(socket);
             socket.BeginReceive(nr.buffer, 0, NetworkResource.BufferSize, 0, new AsyncCallback(ReadCallback), nr);
         }
@@ -81,7 +81,7 @@ namespace CSharp_Server
                 //Console.WriteLine($"Packet Size : {size} , Packet Type : { packetType} ");
 
             }
-
+            
             socket.BeginReceive(nr.buffer, 0, NetworkResource.BufferSize, 0, new AsyncCallback(ReadCallback), nr);
 
         }
@@ -103,4 +103,5 @@ namespace CSharp_Server
         }
 
     }
+    */
 }
