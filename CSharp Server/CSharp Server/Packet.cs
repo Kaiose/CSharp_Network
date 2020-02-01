@@ -11,8 +11,8 @@ namespace CSharp_Server
     public enum PacketType
     {
         NONE = 0,
-        E_C_REQ_MESSAGE = 100,
-        E_S_ANS_MESSAGE = 101,
+        C_REQ_MESSAGE = 100,
+        S_ANS_MESSAGE = 101,
     }
 
     
@@ -50,10 +50,10 @@ namespace CSharp_Server
             Packet result = null;
             switch (packetType)
             {
-                case PacketType.E_C_REQ_MESSAGE:
+                case PacketType.C_REQ_MESSAGE:
                     result = new PK_C_REQ_MESSAGE();
                     break;
-                case PacketType.E_S_ANS_MESSAGE:
+                case PacketType.S_ANS_MESSAGE:
                     break;
             }
             return result;
@@ -72,7 +72,7 @@ namespace CSharp_Server
         
         public PK_C_REQ_MESSAGE() 
         {
-            this.packetType = PacketType.E_C_REQ_MESSAGE;
+            this.packetType = PacketType.C_REQ_MESSAGE;
         }
         
         protected override void Serialize()

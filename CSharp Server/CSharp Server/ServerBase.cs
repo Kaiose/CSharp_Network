@@ -12,14 +12,13 @@ namespace CSharp_Server
 {
     class ServerBase
     {
-        private Socket socket = null;
+
         private IPAddress ipAddress = null;
         private IPEndPoint localEndPoint = null;
         private Socket listenSocket = null;
         private ConcurrentBag<SocketAsyncEventArgs> AcceptEventPool = new ConcurrentBag<SocketAsyncEventArgs>();
         private ConcurrentBag<SocketAsyncEventArgs> ReceiveEventPool = new ConcurrentBag<SocketAsyncEventArgs>();
-        private ConcurrentBag<Session> SessionPool = new ConcurrentBag<Session>();
-
+        
 
         protected bool shutdown = false;
         public ServerBase(int socketPoolCount = 100, string IP = "127.0.0.1", Int32 port = 9000)
@@ -40,10 +39,7 @@ namespace CSharp_Server
             SocketAsyncEventArgs AcceptEvent, ReceiveEvent;
             for (int i = 0; i < count; i++)
             {
-                Session session = new Session();
-
-                SessionPool.Add(session);
-
+                
                 AcceptEvent = new SocketAsyncEventArgs();
                 AcceptEvent.Completed += new EventHandler<SocketAsyncEventArgs>(AcceptEvent_Completed);
 
@@ -60,12 +56,9 @@ namespace CSharp_Server
             Socket socket = e.AcceptSocket;
 
             //
-            Session session = null;
-            if(!SessionPool.TryTake(out session))
-            {
-                //Disconnect
-            }
 
+            var session = SessionManager.instance.Alloc();
+            
             session.socket = socket;
 
             Console.WriteLine("Accept Complete!!");
@@ -103,7 +96,7 @@ namespace CSharp_Server
                 Packet packet = Packet.getPacket(packetType);
                 currentOffset = packet.Decode(e.Buffer);
 
-                session.MacthAndRun(packet);
+                ((Action<Session,Packet>)session.PacketFunc[(int)packetType])(session, packet);
             }
 
             session.totalOffset += (e.BytesTransferred - currentOffset);
@@ -111,6 +104,7 @@ namespace CSharp_Server
 
             Console.WriteLine("total offset : {0}, Decoded Size : {1} ",session.totalOffset,currentOffset);
 
+           
             session.socket.ReceiveAsync(e);
 
             /*

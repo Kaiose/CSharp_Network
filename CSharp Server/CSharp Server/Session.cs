@@ -6,17 +6,24 @@ using System.Threading;
 using System.Net.Sockets;
 namespace CSharp_Server
 {
-    class Session
+    public class Session
     {
+        public int id;
 
         public byte[] buffer = new byte[1024];
         public int totalOffset = 0;
         public Socket socket { set; get; }
-        
 
+        public Delegate[] PacketFunc = new Action<Session,Packet>[ushort.MaxValue];
         
         public Session()
         {
+
+            foreach(var protocol in Enum.GetValues(typeof(PacketType)))
+            {
+                PacketFunc[(int)protocol] = Delegate.CreateDelegate(typeof(Action<Session,Packet>), this, $"Recv_{(PacketType)protocol}");
+            }
+
         }
 
 
@@ -24,20 +31,20 @@ namespace CSharp_Server
         {
 
         }
-
+        /*
         public virtual void MacthAndRun(Packet packet)
         {
             
             switch (packet.getPacketType())
             {
-                case PacketType.E_C_REQ_MESSAGE:
-                    C_REQ_MESSAGE(packet);
+                case PacketType.C_REQ_MESSAGE:
+                    Recv_C_REQ_MESSAGE(packet);
                     break;
             }       
         }
+        */
         
-        
-        public static void C_REQ_MESSAGE(Packet rowPacket)
+        public static void Recv_C_REQ_MESSAGE(Session session, Packet rowPacket)
         {
             PK_C_REQ_MESSAGE packet = rowPacket as PK_C_REQ_MESSAGE;
 
