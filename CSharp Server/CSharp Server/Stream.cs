@@ -8,7 +8,7 @@ namespace CSharp_Server
     public class Stream
     {
 
-        public static void finalSet(byte[] buffer, PacketType packetType, int offset )
+        public static void finalSet(byte[] buffer, ushort packetType, int offset )
         {
             writeLength(buffer, offset);
             writeHeader(buffer, packetType);
@@ -92,13 +92,13 @@ namespace CSharp_Server
         private static void writeLength(byte[] buffer, int offset)
         {
             byte[] encodedBytes = BitConverter.GetBytes(offset);
-            Copy(buffer, encodedBytes, 0);
+            Copy(buffer, encodedBytes, 0); // current offset = 0;
         }
 
-        private static void writeHeader(byte[] buffer, PacketType packetType)
+        private static void writeHeader(byte[] buffer, ushort packetType)
         {
-            byte[] encodedBytes = BitConverter.GetBytes((int)packetType);
-            Copy(buffer, encodedBytes, 4);
+            byte[] encodedBytes = BitConverter.GetBytes((packetType));
+            Copy(buffer, encodedBytes, 4); // current offset = 4
         }
 
 

@@ -14,6 +14,10 @@ namespace CSharp_Server
         {
             Server server = new Server();
 
+            server.Init();
+
+            server.Start_Accept();
+
             Console.Read();
 
         }

@@ -14,120 +14,91 @@ namespace CSharp_Server
     {
 
         private IPAddress ipAddress = null;
-        private IPEndPoint localEndPoint = null;
-        private Socket listenSocket = null;
-        private ConcurrentBag<SocketAsyncEventArgs> AcceptEventPool = new ConcurrentBag<SocketAsyncEventArgs>();
-        private ConcurrentBag<SocketAsyncEventArgs> ReceiveEventPool = new ConcurrentBag<SocketAsyncEventArgs>();
+        private IPEndPoint localEndPoint_for_clients = null;
+        private IPEndPoint localEndPoint_for_servers = null;
+        private Socket listenSocket_for_clients = null;
+        private Socket listenSocket_for_servers = null;
+        private Int32 port_for_clients = 0;
+        private Int32 port_for_servers = 0;
+        protected ConcurrentBag<SocketAsyncEventArgs> AcceptEventPool = new ConcurrentBag<SocketAsyncEventArgs>();
+        protected ConcurrentBag<SocketAsyncEventArgs> ReceiveEventPool = new ConcurrentBag<SocketAsyncEventArgs>();
         
+        readonly private ushort clients_backlog = 1000;
+        readonly private ushort servers_backlog = 10;
 
         protected bool shutdown = false;
-        public ServerBase(int socketPoolCount = 100, string IP = "127.0.0.1", Int32 port = 9000)
+        public ServerBase(string IP = "127.0.0.1", Int32 port_clients = 9000, Int32 port_servers = 9100)
         {
             ipAddress = IPAddress.Parse(IP);
-            localEndPoint = new IPEndPoint(ipAddress, port);
-            listenSocket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            localEndPoint_for_clients = new IPEndPoint(ipAddress, port_clients);
+            localEndPoint_for_servers = new IPEndPoint(ipAddress, port_servers);
 
-            Init_Pool(socketPoolCount);
-            Listen(socketPoolCount);
-
+            listenSocket_for_clients = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            listenSocket_for_servers = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         }
-        
-        
 
-        private void Init_Pool(int count = 100)
+
+        public virtual void Init()
         {
-            SocketAsyncEventArgs AcceptEvent, ReceiveEvent;
-            for (int i = 0; i < count; i++)
+            Bind();
+            Listen();
+        }
+
+        private void Bind()
+        {
+            try
             {
-                
-                AcceptEvent = new SocketAsyncEventArgs();
-                AcceptEvent.Completed += new EventHandler<SocketAsyncEventArgs>(AcceptEvent_Completed);
-
-                ReceiveEvent = new SocketAsyncEventArgs();
-                ReceiveEvent.Completed += new EventHandler<SocketAsyncEventArgs>(ReceiveEvent_Completed);
-
-                AcceptEventPool.Add(AcceptEvent);
-                ReceiveEventPool.Add(ReceiveEvent);
+                listenSocket_for_clients.Bind(localEndPoint_for_clients);
+                listenSocket_for_servers.Bind(localEndPoint_for_servers);
+            }
+            catch(SocketException e)
+            {
+                Console.WriteLine($"Bind Error! error code : {e.SocketErrorCode} Message : {e.Message}");
             }
         }
 
-        private void AcceptEvent_Completed(object sender, SocketAsyncEventArgs e)
+        private void Listen()
         {
-            Socket socket = e.AcceptSocket;
-
-            //
-
-            var session = SessionManager.instance.Alloc();
-            
-            session.socket = socket;
-
-            Console.WriteLine("Accept Complete!!");
-            
-            SocketAsyncEventArgs receiveEvent;
-            ReceiveEventPool.TryTake(out receiveEvent);
-
-            receiveEvent.UserToken = session;            
-            
-            /*
-             * getbuffer from buffer pool
-             */ 
-
-            receiveEvent.SetBuffer(session.buffer,session.totalOffset,session.buffer.Length - session.totalOffset);
-
-
-
-            socket.ReceiveAsync(receiveEvent);
-            
-            
-        }
-
-        private void ReceiveEvent_Completed(object sender, SocketAsyncEventArgs e)
-        {
-            Session session = e.UserToken as Session;
-
-            int currentOffset = 0;
-
-            if (session.socket.Connected == true && e.BytesTransferred > 0)
+            try
             {
-
-
-               //Seesion
-                PacketType packetType = (PacketType)BitConverter.ToInt32(e.Buffer, sizeof(int));
-                Packet packet = Packet.getPacket(packetType);
-                currentOffset = packet.Decode(e.Buffer);
-
-                ((Action<Session,Packet>)session.PacketFunc[(int)packetType])(session, packet);
+                listenSocket_for_clients.Listen(clients_backlog);
+                listenSocket_for_servers.Listen(servers_backlog);
             }
-
-            session.totalOffset += (e.BytesTransferred - currentOffset);
-            e.SetBuffer(session.buffer, session.totalOffset, session.buffer.Length - session.totalOffset);
-
-            Console.WriteLine("total offset : {0}, Decoded Size : {1} ",session.totalOffset,currentOffset);
-
-           
-            session.socket.ReceiveAsync(e);
-
-            /*
-             * Remain Buffer pull 
-             */
+            catch (SocketException e)
+            {
+                Console.WriteLine($"Listen Error! error code : {e.SocketErrorCode} Message : {e.Message}");
+            }
         }
 
-        protected void Listen(int socketCount)
-        {
-            listenSocket.Bind(localEndPoint);
-            listenSocket.Listen(socketCount);
 
-            SocketAsyncEventArgs acceptEvent;
-            while(AcceptEventPool.TryTake(out acceptEvent))
+        // Type 종류가 명확하다. 팩토리제작 안함. Type 증가시 팩토리제작하겠음
+        protected void Accept(Session session)
+        { 
+            if(session.sessionType == SessionType.Client)
             {
-                bool result = listenSocket.AcceptAsync(acceptEvent);
-                if(result == false)
+                if (false == listenSocket_for_clients.AcceptAsync(session.acceptEvent))
                 {
+                    Console.WriteLine("Clients Accept Error!");
+                }
 
+            }
+            else if(session.sessionType == SessionType.Server)
+            {
+                if( false == listenSocket_for_servers.AcceptAsync(session.acceptEvent))
+                {
+                    Console.WriteLine("Servers Accept Error!");
                 }
             }
-
-
+            
         }
+
+
+
+
+
+
+        
+
+
     }
 }
