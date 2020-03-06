@@ -18,7 +18,7 @@ namespace CSharp_Server
 
     }
 
-    partial class ServerSessionProtocolHandler { 
+    partial class ServerProtocolHandler { 
     
     }
 

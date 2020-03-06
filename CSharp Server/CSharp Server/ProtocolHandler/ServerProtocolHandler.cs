@@ -4,10 +4,10 @@ using System.Text;
 
 namespace CSharp_Server
 {
-    partial class ServerSessionProtocolHandler : ProtocolHandler
+    partial class ServerProtocolHandler : ProtocolHandler
     {
 
-        public ServerSessionProtocolHandler() : base()
+        public ServerProtocolHandler() : base()
         {
         }
 

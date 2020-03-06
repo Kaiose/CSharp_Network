@@ -26,7 +26,7 @@ namespace CSharp_Server
                 () => { return new Client(new ClientProtocolHandler()); });
 
             SessionManager.instance.Regist_Create_Session_Func(SessionType.Server,
-                () => { return new ServerSession(new ServerSessionProtocolHandler()); });
+                () => { return new ServerSession(new ServerProtocolHandler()); });
 
 
             SessionManager.instance.Make_Session(SessionType.Client, 100);
